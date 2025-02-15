@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, MessageHandler, filters
-from bot.repo.database import db
+from repo.database import db
 
 HELP_TEXT = """
 📚 *Доступные команды:*\n

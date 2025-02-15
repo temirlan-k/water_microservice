@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler
 import qrcode
 from io import BytesIO
-from bot.repo.database import db
+from repo.database import db
 async def check_bonus(update: Update, context: ContextTypes.DEFAULT_TYPE):
     balance = await db.get_bonus_balance(update.effective_user.id)
     balance = balance if balance is not None else 0  # Если None, заменяем на 0

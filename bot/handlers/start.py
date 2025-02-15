@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, ConversationHandler, MessageHandler, filters
 REGISTER_IIN, REGISTER_ADDRESS, REGISTER_PHONE, VERIFY_CODE = range(4)
-from bot.repo.database import db
+from repo.database import db
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("👋 Добро пожаловать! Введите ваш ИИН:")

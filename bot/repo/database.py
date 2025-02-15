@@ -11,7 +11,7 @@ class Database:
     def __init__(self):
         """Инициализация базы данных"""
         self.pool = None
-        self.db_url = os.getenv("DATABASE_URL")
+        self.db_url = "postgresql://postgres:mysecretpassword@localhost:5440/postgres"
 
     async def connect(self):
         """Создание пула соединений"""
@@ -125,6 +125,39 @@ class Database:
                 """,
                 user_id, total_bonus
             )
+        finally:
+            await self.pool.release(conn)
+
+    async def create_couriers(self,full_name,IIN,phone_number,address,email,telegram_id):
+        conn = await self._get_connection()
+        try:
+            await conn.execute(
+                """
+                INSERT INTO couriers (full_name,IIN,phone_number,address,email,telegram_id) 
+                VALUES ($1, $2, $3, $4, $5, $6)
+                """,
+                full_name,IIN,phone_number,address,email,telegram_id
+            )
+        finally:
+            await self.pool.release(conn)
+
+    async def get_couriers(self):
+        conn = await self._get_connection()
+        try:
+            couriers = await conn.fetch(
+                "SELECT * FROM couriers"
+            )
+            return couriers
+        finally:
+            await self.pool.release(conn)
+
+    async def get_courier(self,telegram_id):
+        conn = await self._get_connection()
+        try:
+            courier = await conn.fetchrow(
+                "SELECT * FROM couriers WHERE telegram_id = $1",telegram_id
+            )
+            return courier
         finally:
             await self.pool.release(conn)
 
